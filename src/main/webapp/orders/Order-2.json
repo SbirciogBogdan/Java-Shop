@@ -1,0 +1,26 @@
+{
+   "date": "Thu Sep 03 00:02:06 EEST 2020",
+   "total": "1250.00 USD",
+   "shipping": {
+      "zipcode": "060903",
+      "country": "Romania",
+      "address": "sector 6, Orsova nr. 104,  block 2,  ap.8",
+      "city": "Bucharest"
+   },
+   "id": 2,
+   "user": "Tudor Dan Duzinschi",
+   "products": [
+      {
+         "name": "Prada Sapphire and diamonds Rings",
+         "quantity": "1",
+         "id": "1",
+         "supplier": "Prada"
+      },
+      {
+         "name": "Bvlgari Ruby Earrings",
+         "quantity": "2",
+         "id": "2",
+         "supplier": "Bvlgari"
+      }
+   ]
+}

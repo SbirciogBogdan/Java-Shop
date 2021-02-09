@@ -1,0 +1,8 @@
+{
+   "id": 1,
+   "events": [{
+      "date": "Tue Aug 18 10:01:49 EEST 2020",
+      "description": "Order created. Status = CHECKED"
+   }],
+   "status": "CHECKED"
+}

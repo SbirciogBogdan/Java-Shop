@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html :: copy"><title>Page Title</title></head>
+<body>
+    <nav th:replace="fragments/navbar.html :: copy">Navbar</nav>
+
+    <main class="page shopping-cart-page">
+        <section class="clean-block clean-cart dark">
+            <div class="container">
+                <div class="block-heading">
+                    <h2 class="text-info">Order checkout</h2>
+                    <p>Your order contains <span th:text="${session.cart.getNumberOfItems()}"></span> items</p>
+                    <p th:if="${session.cart.getNumberOfItems()} == 0">If you want to place an order please add products to your shopping cart.</p>
+                    <p th:if="${session.user == null}">For a better shopping experience please <a href="login.html">log in</a> or <a href="signup.html">sign up</a>.</p>
+                </div>
+                <form  method="post" action="checkout.html" th:if="${session.cart.getNumberOfItems()} > 0" accept-charset="utf-8">
+                    <div class="content">
+                        <div class="row no-gutters">
+                            <div class="col-md-12 col-lg-8">
+                                <div class="items">
+                                    <table class="table table-hover table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Name</th>
+                                                <th scope="col" class="text-right">Unit price</th>
+                                                <th scope="col" class="text-center">Quantity</th>
+                                                <th scope="col" class="text-right">Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="item : ${session.cart.getItems()}">
+                                                <td><a class="product-name" href="#" th:href="'/product?productId='+${item.getProduct().getId()}" th:text="${item.getProduct().getName()}">Product Name</a></td>
+                                                <td class="text-right" th:text="${item.getPrice().toString()}">100 USD</td>
+                                                <td class="text-center" th:text="${item.getQuantity()}">2</td>
+                                                <td class="text-right" th:text="${item.getTotalPrice().toString()}">200 USD</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="text-right font-weight-bold">
+                                                <td colspan="3">TOTAL</td>
+                                                <td th:text="${session.cart.getTotalPrice().toString()}">200 USD</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-4 summary" style="padding: 10px">
+                                <h3>User data</h3>
+                                <div th:if="${session.user == null}" class="container">
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input class="form-control item" type="text" id="name" name="name" required minlength="5" th:value="${session.user}?${session.user.getName()}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input class="form-control item" type="email" id="email" name="email" required th:value="${session.user}?${session.user.getEmail()}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Phone number</label>
+                                        <input class="form-control item" type="text" id="phone" name="phone" th:value="${session.user}?${session.user.getPhoneNumber()}" minlength="10">
+                                    </div>
+                                    </div>
+                                <div th:if="${session.user != null}" class="container">
+                                    <div class="form-group">
+                                        <p>Hello <span th:text="${session.user.getName()}">user name</span>!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${session.user == null or session.user.billing == null}" class="content">
+                        <div class="row no-gutters">
+                            <div class="col-md-12 col-lg-6 summary" style="padding: 10px">
+                                <h3>Billing Address</h3>
+                                <div class="container">
+                                    <div class="form-group">
+                                        <label for="BillCountry">Country</label>
+                                        <input class="form-control item" type="text" id="BillCountry" required name="BillCountry" th:value="${session.user and session.user.getBilling()} ? ${session.user.getBilling().getCountry()}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="BillCity">City</label>
+                                        <input class="form-control item" type="text" id="BillCity" required name="BillCity" th:value="${session.user and session.user.getBilling()} ? ${session.user.getBilling().getCity()}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="BillZipcode">Zip Code</label>
+                                        <input class="form-control item" type="text" id="BillZipcode" required name="BillZipcode" th:value="${session.user and session.user.getBilling()} ? ${session.user.getBilling().getZipcode()}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="BillStreetAddress">Street Address</label>
+                                        <input class="form-control item" type="text" id="BillStreetAddress" name="BillStreetAddress" th:value="${session.user and session.user.getBilling()} ? ${session.user.getBilling().getHomeAddress()}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-6 summary" style="padding: 10px">
+                                <h3>Shipping Address</h3>
+                                <div class="container">
+                                    <div class="form-group">
+                                        <label for="ShipCountry">Country</label>
+                                        <input class="form-control item" type="text" id="ShipCountry" name="ShipCountry" required th:value="${session.user and session.user.getShipping()} ? ${session.user.getShipping().getCountry()}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ShipCity">City</label>
+                                        <input class="form-control item" type="text" id="ShipCity" name="ShipCity" required th:value="${session.user and session.user.getShipping()} ? ${session.user.getShipping().getCity()}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ShipZipcode">Zip Code</label>
+                                        <input class="form-control item" type="text" id="ShipZipcode" name="ShipZipcode" required th:value="${session.user and session.user.getShipping()} ? ${session.user.getShipping().getZipcode()}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ShipStreetAddress">Street Address</label>
+                                        <input class="form-control item" type="text" id="ShipStreetAddress" name="ShipStreetAddress" th:value="${session.user and session.user.getShipping()} ? ${session.user.getShipping().getHomeAddress()}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <button class="btn btn-primary col-6 mb-3 mt-2" type="submit">Place order</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Dark Footer -->
+    <footer th:replace="fragments/footer.html :: copy">Footer</footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="/static/assets/js/script.min.js"></script>
+</body>
+</html>

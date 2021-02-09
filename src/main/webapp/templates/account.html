@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html :: copy"><title>Page Title</title></head>
+<body>
+<nav th:replace="fragments/navbar.html :: copy">Navbar</nav>
+
+<main class="page catalog-page">
+    <section class="clean-block clean-catalog dark cl">
+        <div class="container">
+            <div class="content">
+                <div class="row">
+                    <div th:replace="fragments/sidebar.html :: copy">Sidebar</div>
+                    <div class="col-md-9">
+                        <div class="products">
+                            <div class="row no-gutters">
+                                <section class="col-12 clean-block clean-form dark">
+                                    <div class="container">
+                                        <div class="block-heading">
+                                            <h2 class="text-info">Account info</h2>
+                                            <p th:text="${session.user} == null ? 'Hello Guest, log in or sign up to access this page' : 'Hello ' + ${session.user.getName()} + '!'"></p>
+                                        </div>
+                                        <form th:if="${session.user} != null" method="post" action="account.html" accept-charset="utf-8">
+                                            <section class="clean-form">
+                                                <h3>User data</h3>
+                                                <div class="container">
+                                                    <div class="form-group">
+                                                        <label for="name">Name</label>
+                                                        <input class="form-control item" type="text" id="name" name="name" required minlength="5" th:value="${session.user.getName()}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="email">Email</label>
+                                                        <input class="form-control item" type="email" id="email" name="email" required th:value="${session.user.getEmail()}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="password">Password</label>
+                                                        <input class="form-control item" type="password" id="password" name="password" required th:value="${session.user.getPassword()}" minlength="10">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="phone">Phone number</label>
+                                                        <input class="form-control item" type="text" id="phone" name="phone" th:value="${session.user.getPhoneNumber()}" minlength="10">
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <section class="clean-form">
+                                                <h3>Billing Address</h3>
+                                                <div class="container">
+                                                    <div class="form-group">
+                                                        <label for="BillCountry">Country</label>
+                                                        <input class="form-control item" type="text" id="BillCountry" name="BillCountry" th:value="${session.user.getBilling()}?${session.user.getBilling().getCountry()}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="BillCity">City</label>
+                                                        <input class="form-control item" type="text" id="BillCity" name="BillCity" th:value="${session.user.getBilling()}?${session.user.getBilling().getCity()}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="BillZipcode">Zip Code</label>
+                                                        <input class="form-control item" type="text" id="BillZipcode" name="BillZipcode" th:value="${session.user.getBilling()}?${session.user.getBilling().getZipcode()}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="BillStreetAddress">Street Address</label>
+                                                        <input class="form-control item" type="text" id="BillStreetAddress" name="BillStreetAddress" th:value="${session.user.getBilling()}?${session.user.getBilling().getHomeAddress()}">
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <section class="clean-form">
+                                                <h3>Shipping Address</h3>
+                                                <div class="container">
+                                                    <div class="form-group">
+                                                        <label for="ShipCountry">Country</label>
+                                                        <input class="form-control item" type="text" id="ShipCountry" name="ShipCountry" required th:value="${session.user.getShipping()}?${session.user.getShipping().getCountry()}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="ShipCity">City</label>
+                                                        <input class="form-control item" type="text" id="ShipCity" name="ShipCity" required th:value="${session.user.getShipping()}?${session.user.getShipping().getCity()}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="ShipZipcode">Zip Code</label>
+                                                        <input class="form-control item" type="text" id="ShipZipcode" name="ShipZipcode" required th:value="${session.user.getShipping()}?${session.user.getShipping().getZipcode()}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="ShipStreetAddress">Street Address</label>
+                                                        <input class="form-control item" type="text" id="ShipStreetAddress" name="ShipStreetAddress" th:value="${session.user.getShipping()}?${session.user.getShipping().getHomeAddress()}">
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <button class="btn btn-primary btn-block" type="submit">Update info</button>
+                                        </form>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Dark Footer -->
+<footer th:replace="fragments/footer.html :: copy">Footer</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+<script src="/static/assets/js/script.min.js"></script>
+</body>
+</html>
+<!--
+
+<section class="clean-form">
+    <h3>Shipping Address</h3>
+    <div class="container">
+        <div class="form-group">
+            <label for="ShipCountry">Country</label>
+            <input class="form-control item" type="text" id="ShipCountry" required>
+        </div>
+        <div class="form-group">
+            <label for="ShipCity">City</label>
+            <input class="form-control item" type="text" id="ShipCity" required>
+        </div>
+        <div class="form-group">
+            <label for="ShipZipcode">Zip Code</label>
+            <input class="form-control item" type="text" id="ShipZipcode" required>
+        </div>
+        <div class="form-group">
+            <label for="ShipStreetAddress">Street Address</label>
+            <input class="form-control item" type="text" id="ShipStreetAddress">
+        </div>
+    </div>
+</section>
+<section class="clean-form">
+    <h3>Billing Address</h3>
+    <p>(if different from Shipping Address)</p>
+    <div class="container">
+        <div class="form-group">
+            <label for="BillCountry">Country</label>
+            <input class="form-control item" type="text" id="BillCountry">
+        </div>
+        <div class="form-group">
+            <label for="BillCity">City</label>
+            <input class="form-control item" type="text" id="BillCity">
+        </div>
+        <div class="form-group">
+            <label for="BillZipcode">Zip Code</label>
+            <input class="form-control item" type="text" id="BillZipcode">
+        </div>
+        <div class="form-group">
+            <label for="BillStreetAddress">Street Address</label>
+            <input class="form-control item" type="text" id="BillStreetAddress">
+        </div>
+    </div>
+</section>
+-->

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html :: copy"><title>Page Title</title></head>
+<body>
+    <nav th:replace="fragments/navbar.html :: copy">Navbar</nav>
+
+    <main class="page shopping-cart-page">
+        <section class="clean-block clean-cart dark">
+            <div class="container">
+                <div class="block-heading">
+                    <h2 class="text-info">Order payment</h2>
+                    <p th:if="${session.order != null}">
+                        Hello <span th:text="${session.user}?${session.user.getName()}">Guest</span>,
+                        Order-<span th:text="${session.order.getId()}">1</span>
+                        contains <span th:text="${session.order.getCart().getNumberOfItems()}">3</span>
+                        <span th:text="${session.order.getCart().getNumberOfItems() == 1} ? 'item' : 'items'">items</span>
+                        with a total price of <span th:text="${session.order.getCart().getTotalPrice()}">100 USD</span>
+                        (see details below).
+                    </p>
+                    <p th:if="${session.order == null}">
+                        There is no order to pay. Use the catalog to order some products.
+                    </p>
+                </div>
+                <form  method="post" action="payment.html" th:if="${session.order}" accept-charset="utf-8">
+                    <div class="content">
+                        <div class="row no-gutters">
+                            <div class="col-md-12 col-lg-8">
+                                <div class="items">
+                                    <table class="table table-hover table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Name</th>
+                                                <th scope="col" class="text-right">Unit price</th>
+                                                <th scope="col" class="text-center">Quantity</th>
+                                                <th scope="col" class="text-right">Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="item : ${session.order.getCart().getItems()}">
+                                                <td><a class="product-name" href="#" th:href="'/product?productId='+${item.getProduct().getId()}" th:text="${item.getProduct().getName()}">Product Name</a></td>
+                                                <td class="text-right" th:text="${item.getPrice().toString()}">100 USD</td>
+                                                <td class="text-center" th:text="${item.getQuantity()}">2</td>
+                                                <td class="text-right" th:text="${item.getTotalPrice().toString()}">200 USD</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="text-right font-weight-bold">
+                                                <td colspan="3">TOTAL</td>
+                                                <td th:text="${session.order.getCart().getTotalPrice().toString()}">200 USD</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-4 summary" style="padding: 10px">
+                                <p th:if="${session.paymentError}" class="alert-danger text-center p-1">Payment failed. Please try again ...</p>
+                                <h3>Choose payment method</h3>
+                                <div class="container">
+                                    <fieldset class="form-group text-center">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="paymentMethod" id="creditRadio" value="credit" checked>
+                                            <label class="form-check-label" for="creditRadio">
+                                                Credit Card
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="paymentMethod" id="paypalRadio" value="paypal">
+                                            <label class="form-check-label" for="paypalRadio">
+                                                Paypal
+                                            </label>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="container">
+                                    <div class="d-block" id="creditform">
+                                        <h3>Credit card details</h3>
+                                        <div class="container">
+                                            <div class="form-group">
+                                                <label for="cardNumber">Card Number</label>
+                                                <input class="form-control item" type="text" id="cardNumber" required name="cardNumber">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cardHolder">Card Holder</label>
+                                                <input class="form-control item" type="text" id="cardHolder" required name="cardHolder">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <div class="form-group">
+                                                        <label>Expiry</label>
+                                                        <div class="input-group">
+                                                            <label class="d-none" for="expiryMonth">Expiry month</label>
+                                                            <input class="form-control item" placeholder="MM" type="text" id="expiryMonth" required name="expiryMonth">
+                                                            <label class="d-none" for="expiryYear">Expiry year</label>
+                                                            <input class="form-control item" placeholder="YY" type="text" id="expiryYear" required name="expiryYear">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <label for="cvv">CVV</label>
+                                                        <input class="form-control item" type="text" id="cvv" required name="cvv">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    <div class="d-none" id="paypalform">
+                                        <h3>Paypal details</h3>
+                                        <div class="container">
+                                            <div class="form-group">
+                                                <label for="username">User Name</label>
+                                                <input class="form-control item" type="text" id="username" name="username" autocomplete="username">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password">Password</label>
+                                                <input class="form-control item" type="password" id="password" name="password" autocomplete="password">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <button class="btn btn-primary col-6 mb-3 mt-2" type="submit">Pay order</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Dark Footer -->
+    <footer th:replace="fragments/footer.html :: copy">Footer</footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="/static/assets/js/script.min.js"></script>
+    <script src="/static/assets/js/theme.js"></script>
+</body>
+</html>

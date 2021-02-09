@@ -1,0 +1,14 @@
+{
+   "id": 2,
+   "events": [
+      {
+         "date": "Thu Sep 03 00:02:06 EEST 2020",
+         "description": "Order created. Status = CHECKED"
+      },
+      {
+         "date": "Thu Sep 03 00:02:21 EEST 2020",
+         "description": "Order payed. Status = PAID"
+      }
+   ],
+   "status": "PAID"
+}

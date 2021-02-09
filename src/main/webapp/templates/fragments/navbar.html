@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Start: Navbar -->
+<nav th:fragment="copy" class="navbar navbar-light navbar-expand-lg bg-white clean-navbar">
+    <div class="container">
+        <a class="navbar-brand logo" href="index.html?all=true">CodeCoolShop</a>
+        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navcol-1">
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" href="index.html?all=true">Catalog</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" href="cart.html">
+                        Shopping Cart (<span th:text="${session.cart}?${session.cart.getNumberOfItems()}:'0'"></span>)
+                    </a>
+                </li>
+                <li th:if="${session.cart} and ${session.cart.getNumberOfItems()} > 0" class="nav-item" role="presentation">
+                    <a class="nav-link" href="checkout.html">Checkout</a>
+                </li>
+                <li th:if="${session.order} and ${session.order.getCart().getNumberOfItems()} > 0" class="nav-item" role="presentation">
+                    <a class="nav-link" href="payment.html">Payment</a>
+                </li>
+                <li th:if="${session.user == null}" class=" nav-item" role="presentation">
+                    <a class="nav-link" href="login.html">Login</a>
+                </li>
+                <li th:if="${session.user == null}" class="nav-item" role="presentation">
+                    <a class="nav-link" href="signup.html">Sign up</a>
+                </li>
+                <li th:if="${session.user != null}" class=" nav-item" role="presentation">
+                    <a class="nav-link" href="logout.html">Logout</a>
+                </li>
+                <li th:if="${session.user != null}" class=" nav-item" role="presentation">
+                    <a class="nav-link" href="account.html">Billing info</a>
+                </li>
+                <li th:if="${session.user != null}" class=" nav-item" role="presentation">
+                    <a class="nav-link" href="history.html">Order History</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- End: Navbar -->
+</body>
+</html>

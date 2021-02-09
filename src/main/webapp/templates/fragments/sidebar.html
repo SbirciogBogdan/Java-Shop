@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Start: Sidebar -->
+    <div th:fragment="copy" class="col-md-3">
+        <div class="d-md-block">
+            <a class="btn btn-link d-md-none filter-collapse" data-toggle="collapse" aria-expanded="true" aria-controls="filters" href="#filters" role="button">
+                Filters<i class="icon-arrow-down filter-caret"></i>
+            </a>
+            <div class="collapse d-md-block" id="filters">
+                <div class="filters">
+                    <div class="filter-item">
+                        <h3>Categories</h3>
+                        <ul class="form-check">
+                            <li class="form-check-label" th:each="category : ${categories}">
+                                <a th:attr="href='index.html?category='+${category.getId()}" th:text="${category.name}">Category name ...</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="filter-item">
+                        <h3>Suppliers</h3>
+                        <ul class="form-check">
+                            <li class="form-check-label" th:each="supplier : ${suppliers}">
+                                <a th:attr="href='index.html?supplier='+${supplier.getId()}" th:text="${supplier.name}">Supplier name ...</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End: Sidebar -->
+</body>
+</html>

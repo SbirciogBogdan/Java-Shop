@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html :: copy"><title>Page Title</title></head>
+<body>
+    <nav th:replace="fragments/navbar.html :: copy">Navbar</nav>
+
+    <main class="page shopping-cart-page">
+        <section class="clean-block clean-cart dark">
+            <div class="container">
+                <div class="block-heading">
+                    <h2 class="text-info">Order history</h2>
+                    <p th:if="${session.user == null}">
+                        Sorry Guest, only registered users have access to this page.
+                        Please <a href="login.html">log in</a> or <a href="signup.html">sign up</a>.
+                    </p>
+                    <p th:if="${session.user != null}">
+                        Hello <span th:text="${session.user.getName()}">User</span>,
+                        you have <span th:text="${orders} ? ${orders.size()} : '0'">0</span>
+                        recorded orders.
+                    </p>
+                </div>
+                <div class="content" th:each="order : ${orders}">
+                    <div class="row no-gutters">
+                        <div class="col-md-12 col-lg-4 summary p-2 text-center align-middle">
+                            <h3 th:text="${order.getName()}">Order-id</h3>
+                            <p th:text="${order.getDate()}">Order date</p>
+                            <p th:text="${order.getStatus()}">Order status</p>
+                        </div>
+                        <div class="col-md-12 col-lg-8">
+                            <div class="items">
+                                <table class="table table-hover table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col" class="text-right">Unit price</th>
+                                            <th scope="col" class="text-center">Quantity</th>
+                                            <th scope="col" class="text-right">Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="item : ${order.getCart().getItems()}">
+                                            <td><a class="product-name" href="#" th:href="'/product?productId='+${item.getProduct().getId()}" th:text="${item.getProduct().getName()}">Product Name</a></td>
+                                            <td class="text-right" th:text="${item.getPrice().toString()}">100 USD</td>
+                                            <td class="text-center" th:text="${item.getQuantity()}">2</td>
+                                            <td class="text-right" th:text="${item.getTotalPrice().toString()}">200 USD</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="text-right font-weight-bold">
+                                            <td colspan="3">TOTAL</td>
+                                            <td th:text="${order.getCart().getTotalPrice().toString()}">200 USD</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Dark Footer -->
+    <footer th:replace="fragments/footer.html :: copy">Footer</footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="/static/assets/js/script.min.js"></script>
+</body>
+</html>
